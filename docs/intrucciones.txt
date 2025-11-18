@@ -1,0 +1,28 @@
+Para la entrada de datos de las funciones
+
+Aritméticas
+
+x**2+3*x+5 -> potencias
+x**0.5 / sqrt(x) -> raíz cuadrada
+Abs(x) -> valor absoluto
+
+Exponencial y logarítmica
+
+exp(x)
+ln(x)
+log(x,base)
+
+Trigonométricas
+
+sin(x)
+cos(x)
+tan(x)
+cot(x)
+sec(x)
+csc(x)
+
+Trigonométricas inversas
+
+arcsin(x)
+arccos(x)
+arctan(x)
