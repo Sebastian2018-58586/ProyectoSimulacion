@@ -32,20 +32,24 @@ p(x) = 1
 q(x) = 2
 r(x) = cos(x)
 limite inferior = 1
-limite superior = PI/2
+limite superior = PI/2 = 1.57
 condicion inicial y(a) = -0.3
 condicion inicial y(b) = -0.1
 numero de puntos N = 3
 
 Método sistemas de ecuaciones no lineales (jacobiano)
 
-variables = x0, x1, x2, ... , xn
+variables = x0, x1, x2, ... , xn = 4
 
-funcion f1 = x0**2+x0*x1-10
-funcion f2 = x1+3*x0*x1**2-57
+funcion f1 = x0**2 + x1**2 + x2 - 10
+funcion f2 = x1 + x2**2 + x3 - 7
+funcion f3 = x0 + x2 + x3**2 - 6
+funcion f4 = x0**2 + x3 - 5
 valor inicial x0 = 1
 valor inicial x1 = 1
-iteraciones = 5
+valor inicial= 1
+valor inicial= 1
+iteraciones = 10
 
 Método sistema de ecuaciones lineales (jacobi)
 
