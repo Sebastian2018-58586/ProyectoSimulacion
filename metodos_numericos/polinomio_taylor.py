@@ -3,112 +3,122 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-# graficar la función y el polinomio de taylor
-def graph_taylor(f, t, x0, x_range=None):
-  """
-  Graficar la función y el polinomio de Taylor.
 
-  Parámetros:
-    f: función a aproximar.
-    t: resultado de la aproximación.
-    x0: punto de aproximación.
-    x_range: tupla (xmin, xmax) para especificar el rango de x. Si es None, se usa un rango por defecto.
-  """
-  # Definir el rango de x alrededor de x0
-  if x_range is None:
-    x_range = (x0 - 5, x0 + 5)  # Rango por defecto si no se especifica
-  
-  x_vals = np.linspace(x_range[0], x_range[1], 500)
-  
-  # Convertir las funciones simbólicas a funciones numéricas
-  x = symbols('x')
-  f_numeric = lambdify(x, f, modules=['numpy'])
-  t_numeric = lambdify(x, t, modules=['numpy'])
-  
-  # Evaluar la función original y el polinomio de Taylor
-  try:
+# ============================================================
+#   POLINOMIO DE TAYLOR
+# ============================================================
+
+def taylor(f, x0, n):
+    """
+    Calcula el polinomio de Taylor de f en x0 de grado n.
+
+    Parámetros:
+        f  : función simbólica de SymPy
+        x0 : punto de aproximación
+        n  : grado del polinomio
+
+    Retorna:
+        t : polinomio de Taylor de grado n
+    """
+    x = symbols('x')
+    t = 0
+
+    # CORRECCIÓN: incluir el término i = n
+    for i in range(n + 1):
+        term = diff(f, x, i).subs(x, x0) / math.factorial(i) * (x - x0)**i
+        t += term
+
+    return t
+
+
+# ============================================================
+#   ERROR ABSOLUTO
+# ============================================================
+
+def absolute_error(f, t, x):
+    """
+    Calcula el error absoluto |f(x) - T(x)|
+
+    Parámetros:
+        f : función original simbólica
+        t : polinomio de Taylor simbólico
+        x : punto donde se evalúa el error
+
+    Retorna:
+        valor del error absoluto
+    """
+    x_sym = symbols('x')
+    return abs(f.subs(x_sym, x) - t.subs(x_sym, x))
+
+
+# ============================================================
+#   ERROR RELATIVO
+# ============================================================
+
+def relative_error(f, t, x):
+    """
+    Calcula el error relativo |(f(x) - T(x)) / f(x)|
+
+    Parámetros:
+        f : función original simbólica
+        t : polinomio de Taylor simbólico
+        x : punto donde se evalúa el error
+
+    Retorna:
+        valor del error relativo
+    """
+    x_sym = symbols('x')
+    real_value = f.subs(x_sym, x)
+
+    if real_value == 0:
+        return float('inf')  # evita división por 0
+
+    return abs((real_value - t.subs(x_sym, x)) / real_value)
+
+
+# ============================================================
+#   GRÁFICA FUNCIÓN vs TAYLOR
+# ============================================================
+
+def graph_taylor(f, t, x0, x_range=None):
+    """
+    Gráfica la función original f y el polinomio de Taylor t.
+
+    Parámetros:
+        f       : función simbólica
+        t       : polinomio de Taylor simbólico
+        x0      : punto de aproximación
+        x_range : tupla (xmin, xmax) opcional
+    """
+
+    x = symbols('x')
+
+    # rango automático
+    if x_range is None:
+        x_range = (x0 - 5, x0 + 5)
+
+    x_vals = np.linspace(x_range[0], x_range[1], 500)
+
+    # convertir a funciones numéricas
+    f_numeric = lambdify(x, f, 'numpy')
+    t_numeric = lambdify(x, t, 'numpy')
+
+    # evaluar
     f_vals = f_numeric(x_vals)
     t_vals = t_numeric(x_vals)
-  except TypeError as e:
-    print("Error al evaluar las funciones:", e)
-    return
-  
-  # Crear la gráfica
-  plt.figure()
-  plt.plot(x_vals, f_vals, label='Función original $f(x)$', color='blue')
-  plt.plot(x_vals, t_vals, label=f'Polinomio de Taylor en $x_0 = {x0}$', color='red', linestyle='--')
-  
-  # Destacar el punto de aproximación
-  plt.scatter([x0], [f_numeric(x0)], color='black', label=f'Punto de aproximación $x_0={x0}$', zorder=5)
-  
-  # Etiquetas y leyenda
-  plt.title('Aproximación con el Polinomio de Taylor')
-  plt.xlabel('$x$')
-  plt.ylabel('$y$')
-  plt.axhline(0, color='black', linewidth=0.5, linestyle='--')
-  plt.axvline(0, color='black', linewidth=0.5, linestyle='--')
-  plt.grid(alpha=0.3)
-  plt.legend()
-  plt.show()
 
+    # graficar
+    plt.figure()
+    plt.plot(x_vals, f_vals, label="Función original f(x)", linewidth=2)
+    plt.plot(x_vals, t_vals, "--", label=f"Polinomio de Taylor (x0={x0})", linewidth=2)
 
-# polinomio de taylor
-def taylor(f, x0, n):
-  """
-  Polinomio de Taylor de f en x0 de grado n
+    # punto de expansión
+    plt.scatter([x0], [f_numeric(x0)], color='black', label="Punto x0")
 
-  Parámetros:
-    f: función a aproximar
-    x0: punto de aproximación
-    n: grado del polinomio
-
-  Retorna:
-    t: polinomio de Taylor de f en x de grado n
-  """
-
-  x = symbols('x')
-  t = 0
-
-  for i in range(n):
-    t += diff(f, x, i).subs(x, x0) / math.factorial(i) * (x - x0)**i
-
-  return t
-
-
-# función para calcular el error real
-def absolute_error(f, t, x):
-  """
-  Calcular el error real de la aproximación con el polinomio de Taylor
-
-  Parámetros:
-    f: función original
-    t: polinomio de Taylor
-    x: punto en el que se evalúa el error
-
-  Retorna:
-    error: error real de la aproximación
-  """
-  
-  x_sym = symbols('x')
-  error = f.subs(x_sym, x) - t.subs(x_sym, x)
-  
-  return abs(error)
-
-# función para calcular el error relativo
-def relative_error(f, t, x):
-  """
-  Calcular el error relativo de la aproximación con el polinomio de Taylor
-
-  Parámetros:
-    f: función original
-    t: polinomio de Taylor
-    x: punto en el que se evalúa el error
-
-  Retorna:
-    error: error relativo de la aproximación
-  """
-  
-  x_sym = symbols('x')
-  error = (f.subs(x_sym, x) - t.subs(x_sym, x)) / f.subs(x_sym, x)
-  
-  return abs(error)
+    # estilo
+    plt.title("Aproximación con el Polinomio de Taylor")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.grid(alpha=0.3)
+    plt.legend()
+    plt.show()
