@@ -4,6 +4,10 @@ from metodos_numericos.newton_raphson import newton_raphson, graph_newton_raphso
 from metodos_numericos.ecuaciones_lineales import jacobi_method
 from metodos_numericos.ecuaciones_no_lineales import newton_raphson_n_variables, graph_nonlinear_equations
 from metodos_numericos.diferencias_finitas import solve_finite_differences, graph_finite_differences
+from metodos_numericos.biseccion import bisection_method, print_bisection_table
+from metodos_numericos.lagrange import lagrange_interpolation, input_points
+
+
 
 # funcion principal
 def main():
@@ -13,7 +17,9 @@ def main():
     print("3. Método diferencias finitas")
     print("4. Método sistemas de ecuaciones no lineales (jacobiano)")
     print("5. Método sistema de ecuaciones lineales (jacobi)")
-    print("6. Salir")
+    print("6. Método de bisección")
+    print("7. Interpolación de Lagrange")
+    print("8. Salir")
 
     option = input("Seleccione una opción: ")
 
@@ -135,8 +141,27 @@ def main():
 
       for i, x in enumerate(formatted_result):
         print(f'Iteración {i}: {x}')
-
+        
     elif option == "6":
+      f = input("Ingrese la función f(x): ")
+      a = float(input("Ingrese el extremo izquierdo a: "))
+      b = float(input("Ingrese el extremo derecho b: "))
+      tol = float(input("Ingrese la tolerancia: "))
+
+      try:
+          table = bisection_method(f, a, b, tol)
+          print_bisection_table(table)
+          print(f"\nAproximación final: x ≈ {table[-1]['p']}")
+      except ValueError as e:
+          print("Error:", e)
+          
+    elif option == "7":
+      points = input_points()
+      P = lagrange_interpolation(points)
+      print("\nPolinomio interpolante de Lagrange:")
+      print(P)
+
+    elif option == "8":
       break
 
     else:

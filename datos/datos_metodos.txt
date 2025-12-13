@@ -63,3 +63,6 @@ A = [[5,-1,1],[2,4,1],[-3,2,-6]]
 b = [-6,7,1]
 tolerancia = 1e-4
 iteraciones = 4
+
+exp(-x)-x
+1e-4
