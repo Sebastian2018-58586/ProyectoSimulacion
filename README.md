@@ -41,5 +41,12 @@ El propósito principal es ofrecer una simulación clara y visual del comportami
 - Iteraciones controladas por tolerancia o número máximo de iteraciones.
 - Reporte de convergencia.
 
+### **6. Método de biseccion**
+-  El método de bisección es una técnica numérica para encontrar raíces de una ecuación 
+f(x)=0. Consiste en dividir un intervalo donde la función cambia de signo hasta aproximarse a la raíz. Es un método simple y confiable.
+
+### **7. Método de lagrange**
+El método de Lagrange permite aproximar una función mediante un polinomio que pasa por un conjunto de puntos conocidos. Se utiliza para estimar valores intermedios cuando solo se dispone de datos discretos.
+
 ---
 
