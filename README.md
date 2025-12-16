@@ -1,5 +1,5 @@
 # **Proyecto de Simulación – Métodos Numéricos**  
-**Autores:** *Joan Sebastián Saavedra* & *Diego Gómez*
+**Autores:** *Joan Sebastián Saavedra* & *Diego Gómez* & Michael Perez
 
 ---
 
